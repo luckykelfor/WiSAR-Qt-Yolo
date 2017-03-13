@@ -8,7 +8,7 @@ using namespace std;
 using namespace cv;
 
 int WEBCAM_ID = 0;
-char VIDEO_FILE[] = "../YoloDisplay/dd.mp4";
+char VIDEO_FILE[] = "../YoloDisplay/DJI_0038.MOV";
 char INPUT_DATA_FILE[]    = "../YoloDisplay/cfg/coco.data";
 char INPUT_CFG_FILE[]     = "../YoloDisplay/cfg/yolo.cfg";
 char INPUT_WEIGHTS_FILE[] = "../YoloDisplay/tiny-yolo-voc.weights";

@@ -4,6 +4,7 @@ extern char INPUT_CFG_FILE[];
 extern char INPUT_WEIGHTS_FILE[];
 extern char VIDEO_FILE[];
 
+extern Mat currentFrameCopy;
 YoloWorkThread::YoloWorkThread()
 {
     p = NULL;
@@ -90,50 +91,41 @@ bool YoloWorkThread::detectOnWebCam()
     int i = 0;
 
 
-    while(vcap->isOpened()) //OR ingterruption.
+    while(true)//(vcap->isOpened()) //OR ingterruption.
     {
-        vcap->read(image);
+//        vcap->read(image);
 
-        //image = imread(INPUT_IMAGE_FILE, IMREAD_COLOR);
-        cout<<i<<endl;
 
-        if( image.empty() )
+//        if( image.empty() )
+//        {
+
+//            printf("Could not capture the image\n");
+//            break;
+//        }
+//        if(i == 0)
+//        {
+//           // vcap->read(image);
+//            width = image.cols;
+//            height = image.rows;
+//            i++;
+//        }
+//        else
         {
 
-            printf("Could not capture the image\n");
-            break;
-        }
-        if(i == 0)
-        {
-           // vcap->read(image);
-            width = image.cols;
-            height = image.rows;
-            i++;
-        }
-        else
-        {
 
-            i++;
-            //cout<<image.channels()<<endl;
-            // imshow("T",image);
 
-             cvtColor(image, image, CV_BGR2RGB);
-
-//            // waitKey();
-            QImage imageQ((unsigned char*)image.data,width,height,width*3,QImage::Format_RGB888);
 
 
 
             // Process the image
-            printf("Image data = %p, w = %d, h = %d\n", image.data, image.size().width, image.size().height);
-            arapahoImage.bgr = image.data;
-            arapahoImage.w = image.size().width;
-            arapahoImage.h = image.size().height;
+            printf("Image data = %p, w = %d, h = %d\n", currentFrameCopy.data, currentFrameCopy.cols, currentFrameCopy.rows);
+            arapahoImage.bgr = currentFrameCopy.data;
+            arapahoImage.w = currentFrameCopy.cols;//.size().width;
+            arapahoImage.h = currentFrameCopy.rows;//.size().height;
             arapahoImage.channels = 3;
             // Using expectedW/H, can optimise scaling using HW in platforms where available
 
             int numObjects = 0;
-            cout<<"OK"<<endl;
             // Detect the objects in the image
             p->Detect(
                         arapahoImage,
@@ -156,26 +148,17 @@ bool YoloWorkThread::detectOnWebCam()
                 p->GetBoxes(
                             boxes,
                             numObjects);
-//                for(int i = 0;i<numObjects;i++)
-//                {
-//                    cv::rectangle(image);
-//                }
-
             }
 
-//            //label.setPixmap(QPixmap::fromImage(imageQ));
-//           // label.resize(label.pixmap()->size());
-//           // this->resize(label.size());
-
-//           // label.show();
-//           // this->show();
-//            //waitKey(1);
            if(boxes)
            {
                delete[] boxes;
                boxes = NULL;//Almost forget!
            }
 
+
+           cvtColor(currentFrameCopy, currentFrameCopy, CV_BGR2RGB);
+           QImage imageQ((unsigned char*)currentFrameCopy.data,currentFrameCopy.cols,currentFrameCopy.rows,currentFrameCopy.cols*3,QImage::Format_RGB888);
            emit frameProcessed(imageQ);
         }
 
@@ -200,7 +183,6 @@ void YoloWorkThread::run()
         cout<<"Webcam setup failed.\n";
         return;
     }
-
    detectOnWebCam();
 
 }

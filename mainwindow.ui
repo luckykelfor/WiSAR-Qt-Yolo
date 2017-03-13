@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>826</width>
-    <height>524</height>
+    <width>1440</width>
+    <height>900</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,17 +27,43 @@
      <string>Begin Proc</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_frame">
+   <widget class="QLabel" name="label_realTimeFrame">
     <property name="geometry">
      <rect>
-      <x>50</x>
+      <x>0</x>
       <y>40</y>
-      <width>651</width>
-      <height>311</height>
+      <width>720</width>
+      <height>420</height>
      </rect>
     </property>
     <property name="text">
      <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_processedFrame">
+    <property name="geometry">
+     <rect>
+      <x>720</x>
+      <y>40</y>
+      <width>720</width>
+      <height>420</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_realTimeView">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>95</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>RealTimeView</string>
     </property>
    </widget>
   </widget>
@@ -46,7 +72,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>826</width>
+     <width>1440</width>
      <height>27</height>
     </rect>
    </property>

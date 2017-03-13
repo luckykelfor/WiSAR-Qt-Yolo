@@ -6,6 +6,7 @@
 #include <opencv2/opencv.hpp>
 #include "opencv2/highgui/highgui.hpp"
 #include<yoloworkthread.h>
+#include<realtimedisplaythread.h>
 #include<iostream>
 #include<QLabel>
 #include<QPushButton>
@@ -27,10 +28,12 @@ public:
 
  //widgets:
   //  QPushButton pushButton_beginProc; //in ui.h
-    void onButtonBeginDetection();
-
-    void drawPic(const QImage&);
+    void onButton_dispProcessResults();
+    void onButton_dispRealTimeView();
+    void dispProcessResults(const QImage&);
+    void dispRealTimeView(const QImage&);
     YoloWorkThread *workThread;
+    RealTimeDisplayThread *dispThread;
 
 
 

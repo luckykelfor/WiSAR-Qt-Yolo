@@ -17,6 +17,7 @@ SOURCES += main.cpp\
         mainwindow.cpp \
         arapaho/arapaho.cpp \
         yoloworkthread.cpp \
+    realtimedisplaythread.cpp
 
 
 
@@ -36,7 +37,8 @@ LIBS += `pkg-config --libs opencv`
 HEADERS  += mainwindow.h \
             arapaho/arapaho.hpp \
     yoloworkThread.h \
-    yoloworkthread.h
+    yoloworkthread.h \
+    realtimedisplaythread.h
 
 
 FORMS    += mainwindow.ui

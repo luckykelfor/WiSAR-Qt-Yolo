@@ -35,7 +35,7 @@ public:
 
 signals:
     void frameProcessed( const QImage& frame);
-protected:
+protected:Mat currentFrame;
     void run();
 
 };
