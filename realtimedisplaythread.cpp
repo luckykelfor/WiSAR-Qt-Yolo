@@ -31,9 +31,8 @@ void RealTimeDisplayThread::run()
         currentFrame.copyTo(::currentFrameCopy);
         cvtColor(currentFrame, currentFrame, CV_BGR2RGB);
         QImage imageQ((unsigned char*)currentFrame.data,currentFrame.cols,currentFrame.rows,currentFrame.cols*3,QImage::Format_RGB888);
-
-        msleep(1000/FPS);
         emit transmitCurrentFrame(imageQ);
+        msleep(1000/FPS);
     }
 }
 

@@ -28,28 +28,26 @@ MainWindow::~MainWindow()
 void MainWindow::dispProcessResults(const QImage & frame)
 {
 
-    // printf("IN");
-    // cv::Mat image = imread("./test.png");
-    // cvtColor(image, image, CV_BGR2RGB);
-    //QImage imageQ((unsigned char*)image.data,image.cols,image.rows,image.cols*3,QImage::Format_RGB888);
-
-    // if(frame.data_ptr() == NULL)printf("NULL");
     QImage scaledFrame = frame.scaled(ui->label_processedFrame->size());
     ui->label_processedFrame->setPixmap(QPixmap::fromImage(scaledFrame));
-
-    //            label.resize(label.pixmap()->size()););
-    //  ui->label_processedFrame->resize(ui->label_processedFrame->pixmap()->size());//size());
     ui->label_processedFrame->show();
-    ;//TODO
+
 }
 
 void MainWindow::onButton_dispProcessResults()
 {
 
+     workThread->isStopped = (0xFF ^ workThread->isStopped) & 0x01;
 
+     if(0x01 == workThread->isStopped)
+         ui->pushButton_beginProc->setText("Begin Proc");
+     else
+         ui->pushButton_beginProc->setText("Pause");
     if(workThread->isRunning())return;
     else
-        workThread->start();
+        workThread->start();\
+
+
 
 }
 void MainWindow::onButton_dispRealTimeView()
@@ -63,11 +61,5 @@ void MainWindow::dispRealTimeView(const QImage & frame)
 
     QImage scaledFrame = frame.scaled(ui->label_realTimeFrame->size());
     ui->label_realTimeFrame->setPixmap(QPixmap::fromImage(scaledFrame));
-
-    //            label.resize(label.pixmap()->size()););
-
-
-
-    // ui->label_realTimeFrame->resize(ui->label_realTimeFrame->pixmap()->size());//size());
     ui->label_realTimeFrame->show();
 }
