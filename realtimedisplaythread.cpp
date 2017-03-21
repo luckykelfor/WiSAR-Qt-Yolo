@@ -6,6 +6,7 @@ extern char VIDEO_FILE[];
 RealTimeDisplayThread::RealTimeDisplayThread()
 {
 
+    isStopped = false;
     vcap = NULL;
 }
 RealTimeDisplayThread::~RealTimeDisplayThread()
@@ -24,7 +25,7 @@ void RealTimeDisplayThread::run()
     }
     float FPS =  vcap->get(CV_CAP_PROP_FPS);
     Mat currentFrame;
-    while(vcap->isOpened())
+    while(!isStopped && vcap->isOpened())
     {
 
         vcap->read(currentFrame);

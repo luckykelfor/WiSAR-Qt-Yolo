@@ -13,6 +13,7 @@ public:
     RealTimeDisplayThread();
     ~RealTimeDisplayThread();
 
+    bool isStopped;
 //    Mat currentFrame;
     VideoCapture * vcap;
 
@@ -23,6 +24,7 @@ public:
     void transmitCurrentFrame(const QImage &);
 protected:
    void run();
+
 
 
 };

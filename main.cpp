@@ -3,7 +3,7 @@
 
 #include<QPushButton>
 
-
+#include<candidateview.h>
 using namespace std;
 using namespace cv;
 
@@ -12,7 +12,7 @@ char VIDEO_FILE[] = "../YoloDisplay/dd.mp4";
 char INPUT_DATA_FILE[]    = "../YoloDisplay/cfg/coco.data";
 char INPUT_CFG_FILE[]     = "../YoloDisplay/cfg/yolo.cfg";
 char INPUT_WEIGHTS_FILE[] = "../YoloDisplay/yolo.weights";
-char INPUT_IMAGE_FILE[]   = "../YoloDisplay/input.jpg";
+char INPUT_IMAGE_FILE[]   = "../YoloDisplay/test.png";
 int WEBCAM_WIDTH = 1280;
 int WEBCAM_HEIGHT = 720;
 
@@ -36,6 +36,9 @@ int main(int argc, char *argv[])
     }
     cvtColor(image,image,CV_BGR2RGB);
     cout<<image.channels()<<endl;
+
+
+    //CandidateGraphicsView myView(&w);
 
     w.show();
 

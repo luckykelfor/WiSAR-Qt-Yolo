@@ -9,7 +9,8 @@ YoloWorkThread::YoloWorkThread()
 {
     p = NULL;
     vcap = NULL;
-    isStopped = 0x01;
+    isPaused = 0x01;
+    isStopped = false;
 }
 YoloWorkThread::~YoloWorkThread()
 {
@@ -82,18 +83,12 @@ bool YoloWorkThread::detectOnWebCam()
 {
     // Setup image buffer here
     ArapahoV2ImageBuff arapahoImage;
-    Mat image;
-    //QLabel label("Detection Demo",this);
-
-
     box* boxes = 0;
-    int width = 1280;
-    int height = 720;
     int i = 0;
 
-    while(true)
+    while(!isStopped)
     {
-        while(0x00 == this->isStopped)//(vcap->isOpened()) //OR ingterruption.
+        while(0x00 == this->isPaused)//(vcap->isOpened()) //OR ingterruption.
         {
             //        vcap->read(image);
 
@@ -181,8 +176,8 @@ bool YoloWorkThread::detectOnWebCam()
 
 
 
-clean_exit:
-    printf("Exiting...\n");
+
+    printf("Exiting Thread...\n");
     return true;
 }
 

@@ -19,7 +19,8 @@ class YoloWorkThread :public QThread
 public:
     YoloWorkThread();
     ~YoloWorkThread();
-    char isStopped;
+    char isPaused;
+    bool isStopped;
     //cv::Mat *currentFrame;
     //void* w;
    // void setWindow(void  *);
