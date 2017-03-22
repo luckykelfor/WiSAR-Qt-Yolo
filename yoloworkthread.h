@@ -34,6 +34,7 @@ public:
     bool setupWebCam();
     bool fileExists(const char *file);
 
+
 signals:
     void frameProcessed( const QImage& frame);
 protected:Mat currentFrame;

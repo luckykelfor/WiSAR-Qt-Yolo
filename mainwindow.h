@@ -7,7 +7,7 @@
 #include "opencv2/highgui/highgui.hpp"
 #include<yoloworkthread.h>
 #include<realtimedisplaythread.h>
-#include<candidateview.h>
+#include<customerview.h>
 #include<iostream>
 #include<QLabel>
 #include<QPushButton>
@@ -35,7 +35,7 @@ public:
     void dispRealTimeView(const QImage&);
     YoloWorkThread *workThread;
     RealTimeDisplayThread *dispThread;
-    CandidateGraphicsView* myView;
+    CustomerGraphicsView *myProcessedView,*myRealTimeView;
 
 
     ~MainWindow();

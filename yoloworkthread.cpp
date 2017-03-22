@@ -86,6 +86,7 @@ bool YoloWorkThread::detectOnWebCam()
     box* boxes = 0;
     int i = 0;
 
+
     while(!isStopped)
     {
         while(0x00 == this->isPaused)//(vcap->isOpened()) //OR ingterruption.
@@ -114,8 +115,8 @@ bool YoloWorkThread::detectOnWebCam()
 
 
 
-                cvtColor(currentFrameCopy, currentFrameCopy, CV_BGR2RGB);
-                // Process the image
+
+                               // Process the image
                 printf("Image data = %p, w = %d, h = %d\n", currentFrameCopy.data, currentFrameCopy.cols, currentFrameCopy.rows);
                 arapahoImage.bgr = currentFrameCopy.data;
                 arapahoImage.w = currentFrameCopy.cols;//.size().width;
@@ -164,6 +165,8 @@ bool YoloWorkThread::detectOnWebCam()
                     boxes = NULL;//Almost forget!
                 }
 
+
+                cvtColor(currentFrameCopy, currentFrameCopy, CV_BGR2RGB);
 
                 QImage imageQ((unsigned char*)currentFrameCopy.data,currentFrameCopy.cols,currentFrameCopy.rows,currentFrameCopy.cols*3,QImage::Format_RGB888);
                 emit frameProcessed(imageQ);

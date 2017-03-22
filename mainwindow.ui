@@ -27,19 +27,6 @@
      <string>Begin Proc</string>
     </property>
    </widget>
-   <widget class="QLabel" name="label_processedFrame">
-    <property name="geometry">
-     <rect>
-      <x>720</x>
-      <y>40</y>
-      <width>720</width>
-      <height>420</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
-    </property>
-   </widget>
    <widget class="QPushButton" name="pushButton_realTimeView">
     <property name="geometry">
      <rect>
@@ -61,19 +48,6 @@
       <width>256</width>
       <height>192</height>
      </rect>
-    </property>
-   </widget>
-   <widget class="QLabel" name="label_realTimeFrame">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>40</y>
-      <width>720</width>
-      <height>420</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>TextLabel</string>
     </property>
    </widget>
   </widget>

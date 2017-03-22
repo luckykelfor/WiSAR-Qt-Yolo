@@ -19,6 +19,10 @@ public:
 
     bool setupWebcam(const char videoFilePath[]);
 //    bool setupWebcam(const int camID);
+
+    QRect roiRect;
+public slots:
+    void onScalePosChanged(QRect);
     signals:
 
     void transmitCurrentFrame(const QImage &);

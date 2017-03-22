@@ -3,7 +3,7 @@
 
 #include<QPushButton>
 
-#include<candidateview.h>
+#include<customerview.h>
 using namespace std;
 using namespace cv;
 
@@ -15,6 +15,8 @@ char INPUT_WEIGHTS_FILE[] = "../YoloDisplay/yolo.weights";
 char INPUT_IMAGE_FILE[]   = "../YoloDisplay/test.png";
 int WEBCAM_WIDTH = 1280;
 int WEBCAM_HEIGHT = 720;
+int DISPLAY_WIDTH = 720;
+int DISPLAY_HEIGHT=420;
 
 bool needProcess = false;
 //

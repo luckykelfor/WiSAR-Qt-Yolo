@@ -18,7 +18,7 @@ SOURCES += main.cpp\
         arapaho/arapaho.cpp \
         yoloworkthread.cpp \
     realtimedisplaythread.cpp \
-    candidateview.cpp
+    customerview.cpp
 
 
 
@@ -40,7 +40,7 @@ HEADERS  += mainwindow.h \
     yoloworkThread.h \
     yoloworkthread.h \
     realtimedisplaythread.h \
-    candidateview.h
+    customerview.h
 
 
 FORMS    += mainwindow.ui

@@ -5,19 +5,23 @@
 #include<QGraphicsRectItem>
 #include<QRectF>
 
-class CandidateGraphicsView:public QGraphicsView
+class CustomerGraphicsView:public QGraphicsView
 {
     Q_OBJECT
 public:
-    CandidateGraphicsView(QWidget*,QRectF);
-    ~CandidateGraphicsView();
+    CustomerGraphicsView(QWidget*,QRectF);
+    ~CustomerGraphicsView();
     QGraphicsScene *scene;
 //protected:
    void wheelEvent(QWheelEvent *event);
    void mousePressEvent(QMouseEvent *event);
+   void mouseReleaseEvent(QMouseEvent *event);
    //void destroyed
+signals:
+   void setROI(QRect);
 private:
    int scale_iter;
+
 
 };
 
