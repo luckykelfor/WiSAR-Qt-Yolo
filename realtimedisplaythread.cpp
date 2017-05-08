@@ -4,10 +4,13 @@ extern int DISPLAY_HEIGHT;
 #define USE_ROI_FOLLOW_STRATEGY
 Mat currentFrameCopy;
 extern char VIDEO_FILE[];
-RealTimeDisplayThread::RealTimeDisplayThread():roiRect(QRect(0,0,720,420))
+QMutex  mutex;
+RealTimeDisplayThread::RealTimeDisplayThread():roiRect(QRect(0,0,DISPLAY_WIDTH,DISPLAY_HEIGHT))
 {
 
     isStopped = false;
+    recording = false;
+    recordflag = 0;
     vcap = NULL;
 
 }
@@ -31,11 +34,49 @@ void RealTimeDisplayThread::run()
     int count = 0;
     int current_W;
     int current_H;
+    VideoWriter* vwriter = NULL;
     while(!isStopped && vcap->isOpened())
     {
 
 
         vcap->read(currentFrame);
+
+
+        switch(this->recordflag)
+        {
+        case 1:
+        {
+            char currentDateTime[50];
+            time_t time(NULL);
+            strftime(currentDateTime,sizeof(currentDateTime),"%d-%b-%Y %H-%M.avi",localtime(&time));
+            vwriter = new VideoWriter(currentDateTime,CV_FOURCC('x','v','I','D'),25,currentFrame.size());
+
+            if(vwriter->isOpened())
+            {
+                vwriter->write(currentFrame);
+                recordflag = 2;
+            }
+            break;
+        }
+
+        case 2:
+            vwriter->write(currentFrame);
+            break;
+        case -1:
+            if(vwriter->isOpened())
+            {
+                vwriter->release();
+
+            }
+            recordflag = 0;
+            break;
+        default:
+            break;
+
+
+        }
+
+
         if(0 == count)
         {
             current_W = currentFrame.cols;
@@ -53,8 +94,10 @@ void RealTimeDisplayThread::run()
         if(r.y+ r.height > current_H)r.height = current_H - r.y;
 
 
+//        mutex.lock();
         Mat ROI(currentFrame,r);//int()(roiRect.x(),roiRect.y(),roiRect.width(),roiRect.height()));
         ROI.copyTo(::currentFrameCopy);
+//        mutex.unlock();
 #else
         currentFrame.copyTo(currentFrameCopy);
 #endif
@@ -63,6 +106,8 @@ void RealTimeDisplayThread::run()
         emit transmitCurrentFrame(imageQ);
         msleep(35);
     }
+    if(vwriter->isOpened())
+        vwriter->release();
 }
 
 bool RealTimeDisplayThread::setupWebcam(const char videoFilePath[])
@@ -74,4 +119,14 @@ bool RealTimeDisplayThread::setupWebcam(const char videoFilePath[])
 void RealTimeDisplayThread::onScalePosChanged(QRect roi)
 {
     roiRect=roi;
+}
+
+void RealTimeDisplayThread::startrecording()
+{
+    this->recordflag = 1;
+
+}
+void RealTimeDisplayThread::stoprecording()
+{
+    this->recordflag = -1;
 }

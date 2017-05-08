@@ -12,7 +12,7 @@
 #include<QLabel>
 #include<QPushButton>
 #include<QImage>
-
+#include<QtNetwork>
 
 using namespace cv;
 using namespace std;
@@ -37,8 +37,17 @@ public:
     RealTimeDisplayThread *dispThread;
     CustomerGraphicsView *myProcessedView,*myRealTimeView;
 
+    QTcpServer *server;
+    std::list<QTcpSocket*>clientConnectionList;
+    void acceptConnection();
+    void sendMsg();
+    void readClient();
 
     ~MainWindow();
+    void onClickListenBtn();
+signals:
+    void startrecording();
+    void stoprecording();
 protected:
     void closeEvent(QCloseEvent*);
 private:

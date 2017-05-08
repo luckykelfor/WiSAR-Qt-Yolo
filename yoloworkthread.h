@@ -6,6 +6,7 @@
 #include<QThread>
 #include<QObject>
 #include<QImage>
+#include<QMutex>
 #include<opencv2/opencv.hpp>
 #include <sys/types.h>
 #include <sys/stat.h>

@@ -8,7 +8,7 @@ using namespace std;
 using namespace cv;
 
 int WEBCAM_ID = 0;
-char VIDEO_FILE[] = "../YoloDisplay/tt.mp4";
+char VIDEO_FILE[] = "../YoloDisplay/DJI_0038.MOV";
 char INPUT_DATA_FILE[]    = "../YoloDisplay/cfg/voc.data";//coco.data";
 char INPUT_CFG_FILE[]     = "../YoloDisplay/cfg/yolo-voc.cfg";//yolo.cfg
 char INPUT_WEIGHTS_FILE[] = "../YoloDisplay/yolo-voc_7000.weights";
@@ -16,7 +16,7 @@ char INPUT_IMAGE_FILE[]   = "../YoloDisplay/test.png";
 int WEBCAM_WIDTH = 1280;
 int WEBCAM_HEIGHT = 720;
 int DISPLAY_WIDTH = 720;
-int DISPLAY_HEIGHT=420;
+int DISPLAY_HEIGHT=440;
 
 bool needProcess = false;
 //

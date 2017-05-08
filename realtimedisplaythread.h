@@ -4,6 +4,8 @@
 #include<QImage>
 #include<opencv2/opencv.hpp>
 #include<opencv2/highgui.hpp>
+#include<time.h>
+#include<QMutex>
 using namespace std;
 using namespace cv;
 class RealTimeDisplayThread:public QThread
@@ -21,6 +23,9 @@ public:
 //    bool setupWebcam(const int camID);
 
     QRect roiRect;
+    bool recording;
+    void startrecording();
+    void stoprecording();
 public slots:
     void onScalePosChanged(QRect);
     signals:
@@ -29,6 +34,8 @@ public slots:
 protected:
    void run();
 
+private:
+   int recordflag;
 
 
 };

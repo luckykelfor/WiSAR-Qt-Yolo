@@ -3,7 +3,7 @@ extern char INPUT_DATA_FILE[];
 extern char INPUT_CFG_FILE[];
 extern char INPUT_WEIGHTS_FILE[];
 extern char VIDEO_FILE[];
-
+extern QMutex mutex;
 extern Mat currentFrameCopy;
 Mat roi, frameInUse;
 YoloWorkThread::YoloWorkThread()
@@ -113,17 +113,19 @@ bool YoloWorkThread::detectOnWebCam()
 
 
 
-
+//                mutex.lock();
                 currentFrameCopy.copyTo(frameInUse);
-                Mat roi_tmp(frameInUse, cv::Rect(0,0,frameInUse.cols-10,frameInUse.rows-10));
+
+                Mat roi_tmp(frameInUse, cv::Rect(0,0,frameInUse.cols,frameInUse.rows));
                 roi_tmp.copyTo(roi);
+
 
 
                                // Process the image
                 printf("Image data = %p, w = %d, h = %d\n", roi.data, roi.cols, roi.rows);
-                arapahoImage.bgr = roi.data;
-                arapahoImage.w = roi.cols;//.size().width;
-                arapahoImage.h = roi.rows;//.size().height;
+                arapahoImage.bgr = currentFrameCopy.data;
+                arapahoImage.w = currentFrameCopy.cols;//.size().width;
+                arapahoImage.h = currentFrameCopy.rows;//.size().height;
                 arapahoImage.channels = 3;
                 // Using expectedW/H, can optimise scaling using HW in platforms where available
 
@@ -158,7 +160,8 @@ bool YoloWorkThread::detectOnWebCam()
                         int width = boxes[i].w*roi.cols;
                         int top   = (boxes[i].y-boxes[i].h/2)*roi.rows;
                         int height   = boxes[i].h*roi.rows;
-                        cv::rectangle(roi,cv::Rect(left,top,width,height),Scalar(255,0,0),6);
+                        cv::rectangle(currentFrameCopy,cv::Rect(left,top,width,height),Scalar(0,0,255),6);
+                        cv::putText(currentFrameCopy,"person",Point(left,top),0,1,Scalar(0,255,255),2);
                     }
                 }
 
@@ -171,9 +174,10 @@ bool YoloWorkThread::detectOnWebCam()
 
 
                 roi.copyTo(roi_tmp);
-                cvtColor(roi, roi, CV_BGR2RGB);
 
-                QImage imageQ((unsigned char*)frameInUse.data,frameInUse.cols,frameInUse.rows,frameInUse.cols*3,QImage::Format_RGB888);
+                cvtColor(currentFrameCopy, currentFrameCopy, CV_BGR2RGB);
+
+                QImage imageQ((unsigned char*)currentFrameCopy.data,currentFrameCopy.cols,currentFrameCopy.rows,currentFrameCopy.cols*3,QImage::Format_RGB888);
                 emit frameProcessed(imageQ);
             }
 
