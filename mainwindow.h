@@ -48,6 +48,7 @@ public:
 signals:
     void startrecording();
     void stoprecording();
+    void sendROI(QRect&);
 protected:
     void closeEvent(QCloseEvent*);
 private:

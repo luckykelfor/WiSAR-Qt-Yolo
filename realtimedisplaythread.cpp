@@ -86,7 +86,9 @@ void RealTimeDisplayThread::run()
             continue;
         }
 #ifdef  USE_ROI_FOLLOW_STRATEGY
+
         cv::Rect r((int)(current_W*roiRect.x()/(float)DISPLAY_WIDTH),(int)(current_H*roiRect.y()/(float)DISPLAY_HEIGHT),(int)(current_W*roiRect.width()/(float)DISPLAY_WIDTH),(int)(current_H*roiRect.height()/(float)DISPLAY_HEIGHT));
+
         //if(r.x>current_W)r.x = current_W;
         if(r.x<0)r.x = 0;
         if(r.y<0)r.y = 0;
@@ -94,10 +96,12 @@ void RealTimeDisplayThread::run()
         if(r.y+ r.height > current_H)r.height = current_H - r.y;
 
 
-//        mutex.lock();
+
         Mat ROI(currentFrame,r);//int()(roiRect.x(),roiRect.y(),roiRect.width(),roiRect.height()));
-        ROI.copyTo(::currentFrameCopy);
-//        mutex.unlock();
+        mutex.lock();
+        ::currentFrameCopy = ROI.clone();//DO NOT use copyTo()function here!!!
+        mutex.unlock();
+
 #else
         currentFrame.copyTo(currentFrameCopy);
 #endif
@@ -118,7 +122,9 @@ bool RealTimeDisplayThread::setupWebcam(const char videoFilePath[])
 }
 void RealTimeDisplayThread::onScalePosChanged(QRect roi)
 {
+
     roiRect=roi;
+
 }
 
 void RealTimeDisplayThread::startrecording()

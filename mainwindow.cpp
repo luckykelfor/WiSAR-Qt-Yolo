@@ -75,6 +75,26 @@ void MainWindow::readClient()
     else
     {
         //TODO:Coordinate Transfering.
+        int lu_x = 0;
+        int lu_y = 0;
+        int rb_x = DISPLAY_WIDTH;
+        int rb_y = DISPLAY_HEIGHT;
+
+
+        if(str.length()<42)
+            return ;
+        lu_x = str.mid(0,3).toInt();
+        lu_y = str.mid(3,3).toInt();
+
+        rb_x = str.mid(18,3).toInt();
+        rb_y = str.mid(21,3).toInt();
+
+
+
+
+
+        QRect roi(QPoint(lu_x,lu_y),QPoint(rb_x,rb_y));
+        emit sendROI(roi);
     }
 
     cout<<"Msg: "<< str.toStdString()<<endl;

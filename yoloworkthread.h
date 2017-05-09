@@ -35,6 +35,8 @@ public:
     bool setupWebCam();
     bool fileExists(const char *file);
 
+    QRect roiRect;
+    void onProposalROIReceived(QRect & roi);
 
 signals:
     void frameProcessed( const QImage& frame);

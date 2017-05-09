@@ -3,10 +3,12 @@ extern char INPUT_DATA_FILE[];
 extern char INPUT_CFG_FILE[];
 extern char INPUT_WEIGHTS_FILE[];
 extern char VIDEO_FILE[];
+extern int DISPLAY_WIDTH;
+extern int DISPLAY_HEIGHT;
 extern QMutex mutex;
 extern Mat currentFrameCopy;
-Mat roi, frameInUse;
-YoloWorkThread::YoloWorkThread()
+Mat frameInUse;
+YoloWorkThread::YoloWorkThread():roiRect(QRect(0,0,DISPLAY_WIDTH,DISPLAY_HEIGHT))
 {
     p = NULL;
     vcap = NULL;
@@ -113,19 +115,30 @@ bool YoloWorkThread::detectOnWebCam()
 
 
 
-//                mutex.lock();
-                currentFrameCopy.copyTo(frameInUse);
+                mutex.lock();
+                frameInUse = currentFrameCopy.clone();//DO NOT USE copyTO()function here!!!
+                mutex.unlock();
 
-                Mat roi_tmp(frameInUse, cv::Rect(0,0,frameInUse.cols,frameInUse.rows));
-                roi_tmp.copyTo(roi);
+                mutex.lock();
+
+
+
+
+
+
+
+                cv::Rect roi(this->roiRect.x(),this->roiRect.y(),this->roiRect.width(),this->roiRect.height());
+                mutex.unlock();
+                Mat roi_(frameInUse, roi);
+//                roi_tmp.copyTo(roi);
 
 
 
                                // Process the image
-                printf("Image data = %p, w = %d, h = %d\n", roi.data, roi.cols, roi.rows);
-                arapahoImage.bgr = currentFrameCopy.data;
-                arapahoImage.w = currentFrameCopy.cols;//.size().width;
-                arapahoImage.h = currentFrameCopy.rows;//.size().height;
+                printf("Image data = %p, w = %d, h = %d\n", roi_.data, roi_.cols, roi_.rows);
+                arapahoImage.bgr = roi_.data;
+                arapahoImage.w = roi_.cols;//.size().width;
+                arapahoImage.h = roi_.rows;//.size().height;
                 arapahoImage.channels = 3;
                 // Using expectedW/H, can optimise scaling using HW in platforms where available
 
@@ -156,12 +169,12 @@ bool YoloWorkThread::detectOnWebCam()
                     {
                         // cv::Scalar()
 
-                        int left  = (boxes[i].x-boxes[i].w/2)*roi.cols;
-                        int width = boxes[i].w*roi.cols;
-                        int top   = (boxes[i].y-boxes[i].h/2)*roi.rows;
-                        int height   = boxes[i].h*roi.rows;
-                        cv::rectangle(currentFrameCopy,cv::Rect(left,top,width,height),Scalar(0,0,255),6);
-                        cv::putText(currentFrameCopy,"person",Point(left,top),0,1,Scalar(0,255,255),2);
+                        int left  = (boxes[i].x-boxes[i].w/2)*roi_.cols;
+                        int width = boxes[i].w*roi_.cols;
+                        int top   = (boxes[i].y-boxes[i].h/2)*roi_.rows;
+                        int height   = boxes[i].h*roi_.rows;
+                        cv::rectangle(roi_,cv::Rect(left,top,width,height),Scalar(0,0,255),6);
+                        cv::putText(roi_,"person",Point(left,top),0,1,Scalar(0,255,255),2);
                     }
                 }
 
@@ -172,12 +185,9 @@ bool YoloWorkThread::detectOnWebCam()
                 }
 
 
+                cvtColor(frameInUse, frameInUse, CV_BGR2RGB);
 
-                roi.copyTo(roi_tmp);
-
-                cvtColor(currentFrameCopy, currentFrameCopy, CV_BGR2RGB);
-
-                QImage imageQ((unsigned char*)currentFrameCopy.data,currentFrameCopy.cols,currentFrameCopy.rows,currentFrameCopy.cols*3,QImage::Format_RGB888);
+                QImage imageQ((unsigned char*)frameInUse.data,frameInUse.cols,frameInUse.rows,frameInUse.cols*3,QImage::Format_RGB888);
                 emit frameProcessed(imageQ);
             }
 
@@ -207,4 +217,9 @@ void YoloWorkThread::run()
     }
     detectOnWebCam();
 
+}
+
+void YoloWorkThread::onProposalROIReceived(QRect &roi)
+{
+    this->roiRect = roi;
 }
